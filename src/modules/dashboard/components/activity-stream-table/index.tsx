@@ -10,37 +10,6 @@ import {
 } from "@/modules/ui/table";
 import { useGetAllTaskActivities } from "@/modules/tasks/api/hooks";
 
-const activityStream = [
-	{
-		user: "John Doe", 
-		summary: "Implement user authentication flow",
-	},
-	{
-		user: "Jane Doe",
-		summary: "Design responsive dashboard layout",
-	},
-	{
-		user: "John Doe",
-		summary: "Fix pagination bug in table component",
-	},
-	{
-		user: "Jane Doe",
-		summary: "Add dark mode theme support",
-	},
-	{
-		user: "Jane Doe",
-		summary: "Optimize API response caching",
-	},
-	{
-		user: "Jane Doe",
-		summary: "Create reusable form components",
-	},
-	{
-		user: "Jane Doe",
-		summary: "Update documentation for new features",
-	},
-];
-
 export function ActivityStreamTable() {
 	const { data: activities, isLoading } = useGetAllTaskActivities();
 	return (

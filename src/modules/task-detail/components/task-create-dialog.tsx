@@ -21,7 +21,7 @@ import {
 } from "@/modules/ui/select";
 import { Calendar } from "@/modules/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/modules/ui/popover";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -37,7 +37,7 @@ interface TaskCreateDialogProps {
 	onOpenChange: (open: boolean) => void;
 	parentId?: string | null;
 	projectId?: string;
-	onCreate: (task: Omit<Task, 'id' | 'sequence' | 'status' | 'reporterId' | 'createdById' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'project' | 'assignee' | 'reporter' | 'subtasks' | 'comments'>) => void;
+	onCreate: (task: Omit<Task, 'id' | 'sequence' | 'status' | 'createdById' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'project' | 'assignee' | 'reporter' | 'subtasks' | 'comments'>) => void;
 	variant?: "default" | "ghost";
 }
 
@@ -54,6 +54,7 @@ export default function TaskCreateDialog({
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [priority, setPriority] = useState<TaskPriority>(TaskPriority.MEDIUM);
+	const [reporterId, setReporterId] = useState<string | null>(null);
 	const [assigneeId, setAssigneeId] = useState<string | null>(null);
 	const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
 	const { data: users } = useGetAllUsers();
@@ -63,6 +64,7 @@ export default function TaskCreateDialog({
 			name,
 			description,
 			priority,
+			reporterId,
 			assigneeId,
 			dueDate: dueDate?.toISOString() || null,
 			parentId: parentId ?? null,
@@ -73,6 +75,7 @@ export default function TaskCreateDialog({
 		setName("");
 		setDescription("");
 		setPriority(TaskPriority.MEDIUM);
+		setReporterId(null);
 		setAssigneeId(null);
 		setDueDate(undefined);
 	};
@@ -113,6 +116,15 @@ export default function TaskCreateDialog({
 								<SelectItem value={TaskPriority.HIGH}>High</SelectItem>
 							</SelectContent>
 						</Select>
+					</div>
+					<div className="grid grid-cols-5 gap-2">
+						<Label htmlFor="reporter" className="col-span-1 text-right mt-3">Reporter</Label>
+						<UserSelect
+							value={reporterId}
+							onValueChange={setReporterId}
+							placeholder="Select reporter"
+							className="col-span-4"
+						/>
 					</div>
 					<div className="grid grid-cols-5 gap-2">
 						<Label htmlFor="assignee" className="col-span-1 text-right mt-3">Assignee</Label>
